@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PromptForge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+<script src="/static/chart.umd.js"></script>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<header class="top">
+  <div class="brand"><span class="logo">PF</span><div><b>PromptForge</b><small>prompt quality &amp; security studio</small></div></div>
+  <nav id="nav">
+    <button data-page="studio" class="active"><i>01</i>Studio</button>
+    <button data-page="arena"><i>02</i>Arena<em class="dot"></em></button>
+    <button data-page="lab"><i>03</i>Attack Lab<em class="dot"></em></button>
+    <button data-page="hardening"><i>04</i>Hardening<em class="dot"></em></button>
+    <button data-page="library"><i>05</i>Library</button>
+    <button data-page="report"><i>06</i>Report<em class="dot"></em></button>
+  </nav>
+  <div id="badge" class="badge">...</div>
+</header>
+
+<main>
+  <!-- 01 STUDIO -->
+  <section id="page-studio" class="page active">
+    <div class="cols">
+      <div class="panel">
+        <h2>1 &middot; Pick a domain pack</h2>
+        <div id="packs" class="packs"></div>
+        <div id="packinfo" class="packinfo"></div>
+        <label class="lbl">Task description (editable)</label>
+        <textarea id="task" rows="3"></textarea>
+        <div class="opts">
+          <label>Test inputs per prompt
+            <select id="opt-n"><option value="3">3 (fast)</option><option value="6" selected>6 (full)</option></select>
+          </label>
+          <label class="chk"><input type="checkbox" id="opt-sc"> Self-consistency (3x calls)</label>
+        </div>
+        <button id="forge" class="forge">FORGE &#9656;</button>
+        <p class="hint">Runs: generate &rarr; evaluate &rarr; red-team &rarr; harden &rarr; re-attack &rarr; re-evaluate.</p>
+      </div>
+      <div class="panel">
+        <h2>Pipeline</h2>
+        <ol id="stepper" class="stepper"></ol>
+        <div id="term" class="term"><div class="t-line dim">// waiting for a run...</div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Generated prompt variants <span class="sub">(same template, different technique)</span></h2>
+      <div id="variants" class="variants"><p class="empty">Variants appear here after you press FORGE.</p></div>
+    </div>
+  </section>
+
+  <!-- 02 ARENA -->
+  <section id="page-arena" class="page">
+    <div class="cols">
+      <div class="panel">
+        <h2>Leaderboard <span id="winner-badge" class="wbadge"></span></h2>
+        <div id="board"><p class="empty">No results yet. Run the Studio first.</p></div>
+        <p class="hint">Composite = 0.5 accuracy + 0.2 relevance + 0.2 coherence + 0.1 cost-efficiency. Relevance and coherence come from an LLM judge, so treat them as indicative.</p>
+      </div>
+      <div class="panel">
+        <h2>Quality radar</h2>
+        <div class="chartbox"><canvas id="radar"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 ATTACK LAB -->
+  <section id="page-lab" class="page">
+    <div class="cols">
+      <div class="panel">
+        <h2>Shield meter <span class="sub">(attack success rate of the winning prompt)</span></h2>
+        <div id="gauges" class="gauges"><p class="empty">No attacks run yet.</p></div>
+      </div>
+      <div class="panel">
+        <h2>Breach heatmap</h2>
+        <div id="heat"><p class="empty">No attacks run yet.</p></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Live attack feed</h2>
+      <div id="feed" class="feed"><p class="empty">Attacks stream in here while the pipeline runs.</p></div>
+    </div>
+  </section>
+
+  <!-- 04 HARDENING -->
+  <section id="page-hardening" class="page">
+    <div class="panel">
+      <h2>Defenses added to the winner</h2>
+      <div id="defenses" class="chips"><p class="empty">Appears after the hardening stage.</p></div>
+    </div>
+    <div class="cols">
+      <div class="panel"><h2>Prompt diff <span class="sub">(before &rarr; after)</span></h2><div id="diff" class="diff"></div></div>
+      <div class="panel"><h2>Security vs quality trade-off</h2><div id="tradeoff"></div></div>
+    </div>
+  </section>
+
+  <!-- 05 LIBRARY -->
+  <section id="page-library" class="page">
+    <div class="panel"><h2>Saved runs &amp; templates</h2><div id="library" class="library"></div></div>
+  </section>
+
+  <!-- 06 REPORT -->
+  <section id="page-report" class="page">
+    <div class="panel" id="report"><p class="empty">Finish a run (or open one from the Library) to see the report.</p></div>
+  </section>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
